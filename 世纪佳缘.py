@@ -62,6 +62,7 @@ def parserHtml(html):
         income = key['income']
         shortnote = key['shortnote']
         image = key['image']
+        uidhash = key['helloUrl'].split('=',4)[3]
  
         blist.append(uid)
         blist.append(realUid)
@@ -76,6 +77,7 @@ def parserHtml(html):
         blist.append(income)
         blist.append(shortnote)
         blist.append(image)
+        blist.append(uidhash)
         
         usrinfo.append(blist)
         print(nickname,age,work_location)
@@ -136,7 +138,31 @@ def getuidhash(html):
     except:
         print('getuidhash error!')
 
-    
+def savePicture(inputfile):
+    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image'])
+    for line in range(1,len(userData)):
+        url_bigpic='http://photo.jiayuan.com/showphoto.php?uid_hash=%s&p=0'% str(userData['uid_hash'][line])
+        html = fetchURL(url_bigpic)
+        re_str = r'(.*)<img style="max-width:675px;" src="(.*?.*)" '
+        reObj = re.findall(re_str, html)
+        if not reObj:
+            print(userData['nickname'][line],'There is no picture!')
+            pass
+
+        nickname = re.sub("[\s+\.\!\/_,$%^*(+\"\'?|]+|[+——！，。？、~@#￥%……&*（）▌]+", "",userData['nickname'][line])  
+        
+        for i in range(len(reObj)):            
+            img = requests.get(reObj[i][1]).content
+            filename = str(line) + '-' + nickname + '-' + str(userData['height'][line]) + '-' + str(userData['age'][line]) + '-' +  str(i) +'.jpg'
+            try:
+                with open("C:\\Users\\hiikjh\\Desktop\\images_output1\\" + filename, 'wb') as f:
+                    f.write(img)
+            except:
+                print(filename)
+        time.sleep(3+(line%5))
+    print("finish saving big pictures")
+   
+   
 def savebigpics(inputfile):
     '''
     功能：存取大图片
