@@ -14,7 +14,7 @@ def fetchURL(url):
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
-        'Cookie':'accessID=2019090915162576633; PHPSESSID=cd6fcded5f04ae07a9a507b74ab4c345; save_jy_login_name=17577286344; myuid=221776759; SESSION_HASH=671c65c29cce6e31eaf80e5161f3ac8462f6c29f; user_access=1; pop_time=1568191503868; stadate1=221776759; myloc=32%7C3201; myage=20; PROFILE=222776759%3Alinger_%3Am%3Ahttps%3A%2F%2Fat1.jyimg.com%2F4c%2F06%2F4daq183236c87780e00860b4f90d%3A1%3A%3A1%3A4dad18323_1_avatar_p.jpg%3A1%3A1%3A50%3A10%3A3.0; mysex=m; myincome=30; RAW_HASH=gAMYvNrqAEvGejjRapUb0r5p1p2Wre4L0RRfNK3BkML8c8A8TFDqMH73lRwoFXiBZvz00SJRQdjB%2AMU23-WuiVPqY7dywhsCbG3UzzQw5Cos-JM.; COMMON_HASH=4c4dad183236c87780e00860b4f90d06; sl_jumper=%26cou%3D17%26omsg%3D0%26dia%3D0%26lst%3D2019-09-10; last_login_time=1568191534; user_attr=000000'
+        'Cookie':'SESSION_HASH=f6b0432de91390625aeaa108aa473557d8b23bd0; accessID=20190912152811862900; user_access=1; save_jy_login_name=17577286344; stadate1=221776759; myloc=32%7C3201; myage=20; mysex=m; myuid=221776759; myincome=30; COMMON_HASH=4c4dad183236c87780e00860b4f90d06; last_login_time=1568273342; user_attr=000000; PROFILE=222776759%3Alinger_%3Am%3Aat1.jyimg.com%2F4c%2F06%2F4daq183236c87780e00860b4f90d%3A1%3A%3A1%3A4dad18323_1_avatar_p.jpg%3A1%3A1%3A50%3A10%3A3.0; RAW_HASH=t6TMsof51LnQI7EN1xPgV-22Yx6QrnJF5YDjEfqPugT4r5WzpOvoUKt1sTk%2AsTDrPmoczPd63ia7O54EXMSgaC%2ACYTu%2AFG-s62anDWUXR%2ASRsuI.; PHPSESSID=8744a9fa76deea5d1c0afff9caf840f9; __guid=127468492.709112000173667600.1568274936174.3013; monitor_count=5; pop_time=1568278152023'
         #'Cookie': 'guider_quick_search=on; SESSION_HASH=f09e081981a0b33c26d705c2f3f82e8f495a7b56; PHPSESSID=e29e59d3eacad9c6d809b9536181b5b4; is_searchv2=1; save_jy_login_name=18511431317; _gscu_1380850711=416803627ubhq917; stadate1=183524746; myloc=11%7C1101; myage=23; mysex=m; myuid=183524746; myincome=30; COMMON_HASH=4eb61151a289c408a92ea8f4c6fabea6; sl_jumper=%26cou%3D17%26omsg%3D0%26dia%3D0%26lst%3D2018-11-07; last_login_time=1541680402; upt=4mGnV9e6yqDoj%2AYFb0HCpSHd%2AYI3QGoganAnz59E44s4XkzQZ%2AWDMsf5rroYqRjaqWTemZZim0CfY82DFak-; user_attr=000000; main_search:184524746=%7C%7C%7C00; user_access=1; PROFILE=184524746%3ASmartHe%3Am%3Aimages1.jyimg.com%2Fw4%2Fglobal%2Fi%3A0%3A%3A1%3Azwzp_m.jpg%3A1%3A1%3A50%3A10; pop_avatar=1; RAW_HASH=n%2AazUTWUS0GYo8ZctR5CKRgVKDnhyNymEBbT2OXyl07tRdZ9PAsEOtWx3s8I5YIF5MWb0z30oe-qBeUo6svsjhlzdf-n8coBNKnSzhxLugttBIs.; pop_time=1541680493356'
     }
  
@@ -55,8 +55,7 @@ def parserHtml(html):
         age = key['age']
         work_location = key['work_location']
         height = key['height']
-        education = key['education']
-        
+        education = key['education']        
         matchCondition = key['matchCondition']
         marriage = key['marriage']
         income = key['income']
@@ -91,11 +90,11 @@ def writePage(urating):
         Function : To write the content of html into a local file
         html : The response content
         filename : the local filename to be used stored the response
-    '''
- 
-    import pandas as pd
+    ''' 
+    #import pandas as pd
     dataframe = pd.DataFrame(urating)
     dataframe.to_csv('Jiayuan_UserInfo.csv', mode='a', index=False, sep=',', header=False)
+    
  
 def removesame(inputfile,outputfile='outputfile'):
     '''
@@ -103,14 +102,14 @@ def removesame(inputfile,outputfile='outputfile'):
         inputfile:需要去除重复行的文件名
         outputfile:输出文件名
     '''
-    df = pd.read_csv(inputfile,encoding='utf-8',names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image'])
+    df = pd.read_csv(inputfile,encoding='utf-8',names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image','uid_hash'])
     datalist = df.drop_duplicates()
     datalist.to_csv(outputfile,encoding='utf-8',index=False, header=False)
     print("Done!")
 
 def savepics(inputfile):
     # 读取csv文件
-    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image'])
+    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image','uid_hash'])
     for line in range(len(userData)):
         url = userData['image'][line]
         img = requests.get(url).content
@@ -138,8 +137,9 @@ def getuidhash(html):
     except:
         print('getuidhash error!')
 
-def savePicture(inputfile):
-    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image'])
+def savePicUrl(inputfile):
+    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image','uid_hash'])
+    picurl = []
     for line in range(1,len(userData)):
         url_bigpic='http://photo.jiayuan.com/showphoto.php?uid_hash=%s&p=0'% str(userData['uid_hash'][line])
         html = fetchURL(url_bigpic)
@@ -149,17 +149,20 @@ def savePicture(inputfile):
             print(userData['nickname'][line],'There is no picture!')
             pass
 
-        nickname = re.sub("[\s+\.\!\/_,$%^*(+\"\'?|]+|[+——！，。？、~@#￥%……&*（）▌]+", "",userData['nickname'][line])  
+        nickname = re.sub("[\s+\.\!\/_,$%^*(+\"\'?|]+|[+——！，。？、~@#￥%……&*（）▌]+", "",userData['nickname'][line])
+        filename = nickname + '-' + str(userData['height'][line]) + '-' + str(userData['age'][line]) 
         
+        url = []
+        url.append(filename)
         for i in range(len(reObj)):            
-            img = requests.get(reObj[i][1]).content
-            filename = str(line) + '-' + nickname + '-' + str(userData['height'][line]) + '-' + str(userData['age'][line]) + '-' +  str(i) +'.jpg'
-            try:
-                with open("C:\\Users\\hiikjh\\Desktop\\images_output1\\" + filename, 'wb') as f:
-                    f.write(img)
-            except:
-                print(filename)
+            #img = requests.get(reObj[i][1]).content
+            url.append(reObj[i][1])
+        picurl.append(url)
+        print(picurl)
         time.sleep(3+(line%5))
+    dataframe = pd.DataFrame(picurl)
+    dataframe.to_csv('picurl.csv', mode='a', index=False, sep=',', header=False)
+        
     print("finish saving big pictures")
    
    
@@ -168,7 +171,7 @@ def savebigpics(inputfile):
     功能：存取大图片
     '''
     #读取csv文件
-    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image'])
+    userData = pd.read_csv(inputfile,names=['uid','realUid','nickname','sex','age','work_location','height','education','matchCondition','marriage','income','shortnote','image','uid_hash'])
     maxline = len(userData)
     for line in range(10,maxline):
         if userData['realUid'][line]:
@@ -206,7 +209,7 @@ def savebigpics(inputfile):
 
 if __name__ == '__main__':
     maxpage = 5916
-    textpage = 1
+    textpage = 3
     for page in range(1, textpage):
         url = 'http://search.jiayuan.com/v2/search_v2.php?key=&sex=f&stc=2:18.24,3:155.170,23:1&sn=default&sv=1&p=%s&f=select' % str(page)
         html = fetchURL(url)
@@ -218,4 +221,4 @@ if __name__ == '__main__':
             time.sleep(5)
     removesame('Jiayuan_UserInfo.csv','Jiayuan_UserInfo_output.csv')
     #savepics('Jiayuan_UserInfo_output.csv')
-    savebigpics('Jiayuan_UserInfo_output.csv')
+    savePicUrl('Jiayuan_UserInfo_output.csv')
